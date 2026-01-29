@@ -6,6 +6,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class OperacionesTest {
 
@@ -26,11 +27,22 @@ public class OperacionesTest {
         assertEquals(resultadoEsperado,resultado);
     }
     @ParameterizedTest
-    @ValueSource(doubles=-0.01,10.01})
+    @ValueSource(doubles= {-0.01,10.01})
     @DisplayName("comprobar IllegalArgumentException para notas fuera del rango")
 
     public void clasificacionDeNotasInvalidas(double notaInvalida){
+        assertThrows(IllegalArgumentException.class,() -> Operaciones.calificacion(notaInvalida));
+    }
+ //comprobar el mensaje de excepcion
+    @test
+    @DisplayName("mensaje de error")
 
+    public void mensajeExcepcionFueraDeRango(){
+        IllegalArgumentException ex = assertThrows(
+                IllegalArgumentException.class,
+                ()-> Operaciones.calificacion(10.01),
+                ()-> Operaciones.calificacion(-0.01)
+        );
     }
 
 
